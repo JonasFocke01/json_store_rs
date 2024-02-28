@@ -1,6 +1,12 @@
 use anyhow::Result;
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
-use std::{fmt::Display, fs::OpenOptions, io::Write, path::PathBuf};
+use serde::{de::DeserializeOwned, Serialize};
+use std::{
+    fmt::Display,
+    fs::OpenOptions,
+    io::Write,
+    path::PathBuf,
+    process::{Command, Stdio},
+};
 
 #[derive(Debug)]
 pub enum JsonStoreError {
@@ -94,4 +100,9 @@ pub trait JsonStore: Serialize + DeserializeOwned + Default + Clone {
         };
         Ok(data)
     }
+}
+
+pub fn home_dir() -> Result<PathBuf> {
+    let home = std::env::var("HOME")?;
+    Ok(PathBuf::from(home))
 }
