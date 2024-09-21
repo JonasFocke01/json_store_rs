@@ -41,10 +41,6 @@ pub trait JsonStore: Serialize + DeserializeOwned + Default + Clone {
     fn db_file_path() -> PathBuf;
     fn load() -> Result<Self, JsonStoreError> {
         match Self::read_and_deserialize_file() {
-            Err(JsonStoreError::FilecontentNotValid) => match Self::backup_db_file() {
-                Ok(_) => Err(JsonStoreError::FilecontentNotValid_CreatedBackupfile),
-                Err(_) => Err(JsonStoreError::FilecontentNotValid_CouldNotCreateBackupfile),
-            },
             Err(e) => Err(e),
             Ok(s) => Ok(s),
         }
